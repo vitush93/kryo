@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>{ifset title}{include title|striptags} | {/ifset}Kryo</title>
+
+    <link rel="stylesheet" type="text/css" href="{$basePath}/css/style.css">
+</head>
+
+<body>
+
+{if count($flashes) > 0}
+    <div class="container" id="flashes">
+        <div class="row">
+            <div class="col-lg-12">
+                {foreach $flashes as $flash}
+                    <div class="flash alert alert-{$flash->type} alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+
+                        {$flash->message}
+                    </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+{/if}
+
+{if $user->isLoggedIn()}
+<div class="container" id="menu">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Menu</span>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{link Homepage:}"><i class="fa fa-clock-o"></i> Pending orders <span class="sr-only">(current)</span></a></li>
+                    <li><a href="{link Homepage:all}"><i class="fa fa-list"></i> All orders</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{link Sign:out}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+{/if}
+
+{include content}
+
+<script src="{$basePath}/js/bundle.js"></script>
+</body>
+</html>

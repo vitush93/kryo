@@ -1,0 +1,9 @@
+{
+  "name": "kryo-is",
+  "version": "0.0.1",
+  "dependencies": {
+    "nette.ajax.js": "~2.1.0",
+    "jquery": "~2",
+    "datatables": "1.10.9"
+  }
+}

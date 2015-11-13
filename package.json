@@ -1,0 +1,26 @@
+{
+  "browser": {
+    "nette-live-form": "./assets/js/live-form-validation.js",
+    "nette": "./bower_components/nette.ajax.js/nette.ajax.js",
+    "datatables": "./bower_components/datatables/media/js/jquery.dataTables.js",
+    "datatables.bootstrap": "./bower_components/datatables/media/js/dataTables.bootstrap.js",
+    "jquery": "./bower_components/jquery/dist/jquery.js"
+  },
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "dependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-less": "~1.0.1",
+    "grunt-contrib-uglify": "~0.9.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "less-plugin-autoprefix": "~1.4.2",
+    "grunt-browserify": "~4.0",
+    "load-grunt-tasks": "~3.2.0",
+    "time-grunt": "~1.2.1",
+
+    "bootstrap": "~3.3.5",
+    "font-awesome": "~4.4.0",
+    "underscore": "~1.8.3"
+  }
+}
