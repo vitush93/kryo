@@ -47,7 +47,7 @@ class Orders extends Control
 
             $this->em->flush();
             $this->presenter->flashMessage('Order has been cancelled', 'info');
-            $this->presenter->redirect('this');
+            $this->presenter->redirect('Homepage:default');
         }
     }
 

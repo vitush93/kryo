@@ -48,8 +48,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="{link Homepage:}"><i class="fa fa-clock-o"></i> Pending orders <span class="sr-only">(current)</span></a></li>
-                    <li><a href="{link Homepage:all}"><i class="fa fa-list"></i> All orders</a></li>
+                    <li {ifCurrent Homepage:account}class="active"{/ifCurrent}><a href="{link Homepage:account}"><i class="fa fa-user"></i> My account</a></li>
+                    <li {ifCurrent Homepage:new}class="active"{/ifCurrent}><a href="{link Homepage:new}"><i class="fa fa-truck"></i> Place a new order</a></li>
+                    <li {ifCurrent Homepage:default}class="active"{/ifCurrent}><a href="{link Homepage:}"><i class="fa fa-clock-o"></i> Pending orders</a></li>
+                    <li {ifCurrent Homepage:all}class="active"{/ifCurrent}><a href="{link Homepage:all}"><i class="fa fa-list"></i> All orders</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

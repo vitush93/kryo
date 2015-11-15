@@ -6,7 +6,9 @@ namespace App\Presenters;
 use App\Components\IOrdersFactory;
 use App\Model\Order;
 use App\Model\Settings;
+use App\Model\User;
 use App\Utils\BootstrapForm;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Nette\Application\UI\Form;
 
 class HomepagePresenter extends BasePresenter
@@ -14,6 +16,11 @@ class HomepagePresenter extends BasePresenter
 
     /** @var IOrdersFactory @inject */
     public $ordersFactory;
+
+    function actionAll()
+    {
+        $this->setView('default');
+    }
 
     function orderFormSucceeded(Form $form, $values)
     {
@@ -46,6 +53,7 @@ class HomepagePresenter extends BasePresenter
 
     protected function createComponentOrderForm()
     {
+        $user = $this->findUser();
         $form = new Form();
 
         $form->addSelect('type', 'Type', [
@@ -57,15 +65,20 @@ class HomepagePresenter extends BasePresenter
             ->addRule(Form::MIN, 'Amount must be at least %dl', 1)
             ->setRequired();
         $form->addText('name', 'Name')
+            ->setDefaultValue($user->getName())
             ->setOption('description', 'Enter the name to be used in invoice.')
             ->setRequired();
         $form->addText('business_name', 'Bussiness Name')
+            ->setDefaultValue($user->getBusinessName())
             ->setOption('description', 'Fill in case you are a company.');
         $form->addText('ic', 'IC')
+            ->setDefaultValue($user->getIc())
             ->setOption('description', 'Fill in case you are a company');
         $form->addText('dic', 'DIC')
+            ->setDefaultValue($user->getDic())
             ->setOption('description', 'Fill in case you are a company');
         $form->addTextArea('address', 'Address')
+            ->setDefaultValue($user->getAddress())
             ->setOption('description', 'Enter the shipping address.')
             ->setRequired();
         $form->addTextArea('invoice_address', 'Invoice address')
@@ -84,13 +97,78 @@ class HomepagePresenter extends BasePresenter
         return BootstrapForm::makeBootstrap($form);
     }
 
+    function accountFormSucceeded(Form $form, $values)
+    {
+        $user = $this->findUser();
+
+        if ($values->password) {
+            $user->setPassword($values->password);
+        }
+
+        $user->setName($values->name);
+        $user->setEmail($values->email);
+        $user->setAddress($values->address);
+        $user->setBusinessName($values->business_name);
+        $user->setIc($values->ic);
+        $user->setDic($values->dic);
+
+        try {
+            $this->em->flush();
+            $this->flashMessage('Account saved.', 'info');
+            $this->redirect('this');
+        } catch(UniqueConstraintViolationException $e) {
+            $form->addError('User with this e-mail address already exists.');
+        }
+    }
+
+    protected function createComponentAccountForm()
+    {
+        /** @var User $defaults */
+        $defaults = $this->findUser();
+
+        $form = new Form();
+
+        $form->addText('email', 'E-mail')
+            ->setOption('description', 'This is your contact e-mail and your login.')
+            ->setDefaultValue($defaults->getEmail())
+            ->addRule(Form::EMAIL)
+            ->setRequired();
+        $form->addText('name', 'Name')
+            ->setDefaultValue($defaults->getName());
+        $form->addText('password', 'Password')
+            ->setOption('description', 'Fill only if you want to change your current password.')
+            ->addCondition(Form::FILLED)
+            ->addRule(Form::MIN_LENGTH, 'Password must be at least %d characters long.', 6);
+        $form->addTextArea('address', 'Address')
+            ->setDefaultValue($defaults->getAddress());
+        $form->addText('business_name', 'Business name')
+            ->setDefaultValue($defaults->getBusinessName());
+        $form->addText('ic', 'IC')->setDefaultValue($defaults->getIc());
+        $form->addText('dic', 'DIC')->setDefaultValue($defaults->getDic());
+
+        $form->addSubmit('process', 'Save');
+        $form->onSuccess[] = $this->accountFormSucceeded;
+
+
+        return BootstrapForm::makeBootstrap($form);
+    }
+
     protected function createComponentOrders()
     {
         $orders = $this->ordersFactory->create();
-        $orders->setOrders($this->em->getRepository(Order::class)->findBy([
-            'user' => $this->findUser(),
-            'status' => Order::STATUS_PENDING
-        ]));
+
+        if ($this->action == 'default') {
+            $data = $this->em->getRepository(Order::class)->findBy([
+                'user' => $this->findUser(),
+                'status' => Order::STATUS_PENDING
+            ]);
+        } else {
+            $data = $this->em->getRepository(Order::class)->findBy([
+                'user' => $this->findUser(),
+            ]);
+        }
+
+        $orders->setOrders($data);
 
         return $orders;
     }
