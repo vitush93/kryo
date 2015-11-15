@@ -16,7 +16,7 @@
             <tbody>
             {foreach $orders as $o}
                 <tr>
-                    <td>{$o->getNum()}</td>
+                    <td><a href="{plink Homepage:detail $o->getId()}">{$o->getNum()}</a></td>
                     <td>{$o->getDate()|date:'j.n.Y H:i'}</td>
                     <td>{$o->getType()|firstUpper}</td>
                     <td>{$o->getAmount()}l</td>

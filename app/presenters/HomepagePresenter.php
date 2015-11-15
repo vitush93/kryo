@@ -9,6 +9,7 @@ use App\Model\Settings;
 use App\Model\User;
 use App\Utils\BootstrapForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 
 class HomepagePresenter extends BasePresenter
@@ -20,6 +21,14 @@ class HomepagePresenter extends BasePresenter
     function actionAll()
     {
         $this->setView('default');
+    }
+
+    function actionDetail($id)
+    {
+        $order = $this->em->find(Order::class, $id);
+        if (!$order) throw new BadRequestException;
+
+        $this->template->order = $order;
     }
 
     function orderFormSucceeded(Form $form, $values)
@@ -116,7 +125,7 @@ class HomepagePresenter extends BasePresenter
             $this->em->flush();
             $this->flashMessage('Account saved.', 'info');
             $this->redirect('this');
-        } catch(UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException $e) {
             $form->addError('User with this e-mail address already exists.');
         }
     }
