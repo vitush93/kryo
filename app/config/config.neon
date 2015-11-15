@@ -32,3 +32,4 @@ services:
     router: App\RouterFactory::createRouter
     entityManager: App\EntityManagerFactory::create
     - App\Model\Auth
+    - App\Components\IOrdersFactory

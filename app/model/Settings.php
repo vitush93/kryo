@@ -35,18 +35,18 @@ class Settings
     private function _get($key)
     {
         /** @var Setting $setting */
-        $setting = $this->em->getRepository(Setting::class)->findOneBy(['key' => $key]);
+        $setting = $this->em->getRepository(Setting::class)->findOneBy(['setting_key' => $key]);
         if (!$setting) throw new InvalidArgumentException("Setting with key $key was not found");
 
-        return $setting->getValue();
+        return $setting->getSettingValue();
     }
 
     private function _set($key, $value)
     {
         /** @var Setting $setting */
-        $setting = $this->em->getRepository(Setting::class)->findOneBy(['key' => $key]);
+        $setting = $this->em->getRepository(Setting::class)->findOneBy(['setting_key' => $key]);
         if ($setting) {
-            $setting->setValue($value);
+            $setting->setSettingValue($value);
 
             $this->em->flush();
         } else {

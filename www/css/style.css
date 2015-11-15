@@ -10009,3 +10009,13 @@ h1.page-heading {
   margin: auto;
   max-width: 600px;
 }
+.help-block {
+  margin-bottom: 0;
+  margin-top: 3px;
+}
+.form-group label {
+  font-weight: normal;
+}
+.form-group.required label {
+  font-weight: bold;
+}

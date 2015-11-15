@@ -114,6 +114,8 @@ class User
      */
     function __construct($email, $password, $role)
     {
+        $this->orders = new ArrayCollection();
+
         $this->setEmail($email);
         $this->setPassword($password);
         $this->setRole($role);

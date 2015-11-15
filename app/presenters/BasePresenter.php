@@ -4,11 +4,15 @@ namespace App\Presenters;
 
 
 use App\Model\User;
+use Doctrine\ORM\EntityManager;
 use Nette\Application\UI\Presenter;
 use Nette\Security\IUserStorage;
 
 class BasePresenter extends Presenter
 {
+    /** @var EntityManager @inject */
+    public $em;
+
     protected function startup()
     {
         parent::startup();
@@ -36,6 +40,21 @@ class BasePresenter extends Presenter
                     $this->redirect('Homepage:default');
                 }
             }
+        }
+    }
+
+    /**
+     * @return null|User
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
+    protected function findUser()
+    {
+        if ($this->user->isLoggedIn()) {
+            return $this->em->find(User::class, $this->user->id);
+        } else {
+            return null;
         }
     }
 }

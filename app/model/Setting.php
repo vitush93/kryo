@@ -31,14 +31,14 @@ class Setting
      *
      * @var string
      */
-    private $key;
+    private $setting_key;
 
     /**
      * @Column(type="string")
      *
      * @var string
      */
-    private $value;
+    private $setting_value;
 
     /**
      * Setting constructor.
@@ -47,8 +47,8 @@ class Setting
      */
     function __construct($key, $value)
     {
-        $this->key = $key;
-        $this->value = $value;
+        $this->setting_key = $key;
+        $this->setting_value = $value;
     }
 
     /**
@@ -62,24 +62,24 @@ class Setting
     /**
      * @return string
      */
-    public function getKey()
+    public function getSettingKey()
     {
-        return $this->key;
+        return $this->setting_key;
     }
 
     /**
      * @return string
      */
-    public function getValue()
+    public function getSettingValue()
     {
-        return $this->value;
+        return $this->setting_value;
     }
 
     /**
-     * @param string $value
+     * @param string $setting_value
      */
-    public function setValue($value)
+    public function setSettingValue($setting_value)
     {
-        $this->value = $value;
+        $this->setting_value = $setting_value;
     }
 }

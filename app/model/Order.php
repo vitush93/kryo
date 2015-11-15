@@ -23,8 +23,13 @@ class Order
 {
     const SHIPPING_PICKUP = 'pickup';
     const SHIPPING_DELIVERY = 'delivery';
+
     const TYPE_NITROGEN = 'nitrogen';
     const TYPE_HELIUM = 'helium';
+
+    const STATUS_PENDING = 1;
+    const STATUS_FULFILLED = 2;
+    const STATUS_CANCELLED = 3;
 
     private static $ALLOWED_SHIPPING_METHODS = [
         self::SHIPPING_DELIVERY,
@@ -36,13 +41,25 @@ class Order
         self::TYPE_NITROGEN
     ];
 
+    private static $ALLOWED_STATUSES = [
+        self::STATUS_CANCELLED,
+        self::STATUS_FULFILLED,
+        self::STATUS_PENDING
+    ];
+
     /**
      * @ManyToOne(targetEntity="User", inversedBy="orders")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
      *
      * @var User
      */
     private $user;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="fullfilled_id", referencedColumnName="id")
+     * @var User
+     */
+    private $fulfilled_by;
 
     /**
      * @Id()
@@ -52,6 +69,18 @@ class Order
      * @var int
      */
     private $id;
+
+    /**
+     * @Column(type="string", unique=true)
+     * @var string
+     */
+    private $num = '0';
+
+    /**
+     * @Column(type="datetime")
+     * @var \DateTime
+     */
+    private $date;
 
     /**
      * @Column(type="string")
@@ -91,6 +120,12 @@ class Order
     private $address;
 
     /**
+     * @Column(type="string", nullable=true)
+     * @var string
+     */
+    private $invoice_address;
+
+    /**
      * @Column(type="string")
      *
      * @var string
@@ -116,12 +151,20 @@ class Order
     private $dic;
 
     /**
+     * @Column(type="integer")
+     * @var int
+     */
+    private $status;
+
+    /**
      * Order constructor.
      * @param User $user
      */
     function __construct(User $user)
     {
         $this->setUser($user);
+        $this->status = self::STATUS_PENDING;
+        $this->date = new \DateTime();
     }
 
     /**
@@ -130,6 +173,40 @@ class Order
     public static function getALLOWEDTYPES()
     {
         return self::$ALLOWED_TYPES;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status)
+    {
+        if (!in_array($status, self::$ALLOWED_STATUSES)) throw new InvalidArgumentException("Undefined order status.");
+
+        $this->status = $status;
+    }
+
+    /**
+     * @return User
+     */
+    public function getFulfilledBy()
+    {
+        return $this->fulfilled_by;
+    }
+
+    /**
+     * @param User $fulfilled_by
+     */
+    public function setFulfilledBy($fulfilled_by)
+    {
+        $this->fulfilled_by = $fulfilled_by;
     }
 
     /**
@@ -330,5 +407,72 @@ class Order
         $this->user = $user;
     }
 
+    function isCancelled()
+    {
+        return $this->status == self::STATUS_CANCELLED;
+    }
+
+    function isPending()
+    {
+        return $this->status == self::STATUS_PENDING;
+    }
+
+    function isFulfilled()
+    {
+        return $this->status == self::STATUS_FULFILLED;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getALLOWEDSTATUSES()
+    {
+        return self::$ALLOWED_STATUSES;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getALLOWEDSHIPPINGMETHODS()
+    {
+        return self::$ALLOWED_SHIPPING_METHODS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceAddress()
+    {
+        return $this->invoice_address;
+    }
+
+    /**
+     * @param string $invoice_address
+     */
+    public function setInvoiceAddress($invoice_address)
+    {
+        $this->invoice_address = $invoice_address;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNum()
+    {
+        return $this->num;
+    }
+
+    public function createNum()
+    {
+        $this->num = date('Ym') . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
 
 }

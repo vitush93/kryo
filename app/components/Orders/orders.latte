@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Pending orders</div>
+    <div class="panel-body">
+        <table id="example" class="table" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Price per unit</th>
+                <th>Total price</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $orders as $o}
+                <tr>
+                    <td>{$o->getNum()}</td>
+                    <td>{$o->getDate()|date:'j.n.Y H:i'}</td>
+                    <td>{$o->getType()|firstUpper}</td>
+                    <td>{$o->getAmount()}l</td>
+                    <td>{$o->getPricePerUnit()},-</td>
+                    <td>{$o->getAmount() * $o->getPricePerUnit()},-</td>
+                    <td>
+                        {if $o->isPending()}
+                            <a onclick="return confirm('Are you sure?');" href="{link cancel! $o->getId()}" class="btn btn-xs btn-danger">
+                                <i class="fa fa-ban"></i> cancel
+                            </a>
+                            <a href="" class="btn btn-xs btn-primary">
+                                <i class="fa fa-download"></i> invoice
+                            </a>
+                        {/if}
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
