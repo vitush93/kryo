@@ -2,10 +2,13 @@
 
 namespace App\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Nette\InvalidArgumentException;
 use Nette\Security\Passwords;
 use Nette\Utils\Validators;
@@ -15,16 +18,26 @@ use Nette\Utils\Validators;
  * @package App\Model
  *
  * @Entity()
+ * @Table(name="users")
  */
 class User
 {
     const ROLE_ADMIN = 'admin';
+    const ROLE_KRYO = 'kryo';
     const ROLE_USER = 'user';
 
     private static $ALLOWED_ROLES = [
         self::ROLE_ADMIN,
-        self::ROLE_USER
+        self::ROLE_USER,
+        self::ROLE_KRYO
     ];
+
+    /**
+     * @OneToMany(targetEntity="Order", mappedBy="user")
+     *
+     * @var ArrayCollection
+     */
+    private $orders;
 
     /**
      * @Id()
@@ -64,6 +77,35 @@ class User
     private $role;
 
     /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $address;
+
+
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $business_name;
+
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $ic;
+
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $dic;
+
+    /**
      * User constructor.
      *
      * @param string $email
@@ -75,6 +117,86 @@ class User
         $this->setEmail($email);
         $this->setPassword($password);
         $this->setRole($role);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBusinessName()
+    {
+        return $this->business_name;
+    }
+
+    /**
+     * @param string $business_name
+     */
+    public function setBusinessName($business_name)
+    {
+        $this->business_name = $business_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIc()
+    {
+        return $this->ic;
+    }
+
+    /**
+     * @param string $ic
+     */
+    public function setIc($ic)
+    {
+        $this->ic = $ic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDic()
+    {
+        return $this->dic;
+    }
+
+    /**
+     * @param string $dic
+     */
+    public function setDic($dic)
+    {
+        $this->dic = $dic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function addOrder(Order $order)
+    {
+        $this->orders->add($order);
     }
 
     /**
@@ -93,6 +215,14 @@ class User
         if (!in_array($role, self::$ALLOWED_ROLES)) throw new InvalidArgumentException("Role $role not in list of allowed user roles.");
 
         $this->role = $role;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getALLOWEDROLES()
+    {
+        return self::$ALLOWED_ROLES;
     }
 
     /**

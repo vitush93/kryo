@@ -25,6 +25,7 @@ services:
             - addRole('guest')
             - addRole('user')
             - addRole('admin')
+            - addRole('kryo')
             - addResource('Homepage')
             - allow('admin')
             - allow('user', 'Homepage')
