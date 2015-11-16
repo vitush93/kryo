@@ -16,8 +16,15 @@ $em->flush();
 $helium_price = new \App\Model\Setting('helium.price_per_unit', '10');
 $nitrogen_price = new \App\Model\Setting('nitrogen.price_per_unit', '3');
 
+$address = new \App\Model\Setting('supply.address', "Univerzita Karlova v Praze, Matematicko-fyzikální fakulta\nNové Město, Ke Karlovu 3\n121 16 Praha 2\nČeská republika");
+$ic = new \App\Model\Setting('supply.ic', '28115708');
+$dic = new \App\Model\Setting('supply.dic', 'CZ28115708');
+
 $em->persist($helium_price);
 $em->persist($nitrogen_price);
+$em->persist($address);
+$em->persist($ic);
+$em->persist($dic);
 
 $em->flush();
 

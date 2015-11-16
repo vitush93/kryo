@@ -31,6 +31,11 @@ class Order
     const STATUS_FULFILLED = 2;
     const STATUS_CANCELLED = 3;
 
+    private static $TYPE_NAMES = [
+        self::TYPE_HELIUM => 'LHe2',
+        self::TYPE_NITROGEN => 'LN2'
+    ];
+
     private static $ALLOWED_SHIPPING_METHODS = [
         self::SHIPPING_DELIVERY,
         self::SHIPPING_PICKUP
@@ -218,8 +223,12 @@ class Order
     /**
      * @return string
      */
-    public function getType()
+    public function getType($name = false)
     {
+        if ($name) {
+            return self::$TYPE_NAMES[$this->type];
+        }
+
         return $this->type;
     }
 
@@ -449,6 +458,8 @@ class Order
      */
     public function getInvoiceAddress()
     {
+        if (empty($this->invoice_address)) return $this->address;
+
         return $this->invoice_address;
     }
 
