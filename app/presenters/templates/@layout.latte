@@ -60,6 +60,12 @@
                         <li {ifCurrent Kryo:pending}class="active"{/ifCurrent}><a href="{link Kryo:pending}"><i class="fa fa-clock-o"></i> Pending orders</a></li>
                         <li {ifCurrent Kryo:all}class="active"{/ifCurrent}><a href="{link Kryo:all}"><i class="fa fa-list"></i> All orders</a></li>
                     {/if}
+
+                    {if $user->isInRole('admin')}
+                        <li {ifCurrent Admin:default}class="active"{/ifCurrent}><a href="{link Admin:default}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                        <li {ifCurrent Admin:settings}class="active"{/ifCurrent}><a href="{link Admin:settings}"><i class="fa fa-cogs"></i> Settings</a></li>
+                        <li {ifCurrent Admin:users}class="active"{/ifCurrent}><a href="{link Admin:users}"><i class="fa fa-users"></i> Users</a></li>
+                    {/if}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

@@ -28,6 +28,7 @@ services:
             - addRole('kryo')
             - addResource('Homepage')
             - addResource('Kryo')
+            - addResource('Admin')
             - allow('admin')
             - allow('user', 'Homepage')
             - allow('kryo', 'Kryo')

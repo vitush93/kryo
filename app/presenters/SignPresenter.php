@@ -32,8 +32,10 @@ class SignPresenter extends BasePresenter
 
             if ($this->user->isInRole(User::ROLE_USER)) {
                 $this->redirect('Homepage:default');
-            } else if($this->user->isInRole(User::ROLE_KRYO)) {
+            } else if ($this->user->isInRole(User::ROLE_KRYO)) {
                 $this->redirect('Kryo:default');
+            } else if ($this->user->isInRole(User::ROLE_ADMIN)) {
+                $this->redirect('Admin:default');
             }
 
             $this->redirect('Homepage:default');

@@ -34,12 +34,6 @@ class BasePresenter extends Presenter
                     $this->redirect('Sign:default');
                 }
             }
-        } else {
-            if ($this->user->isLoggedIn()) {
-                if ($this->user->isInRole(User::ROLE_ADMIN)) {
-                    $this->redirect('Homepage:default');
-                }
-            }
         }
     }
 
