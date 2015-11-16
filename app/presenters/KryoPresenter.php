@@ -6,6 +6,7 @@ namespace App\Presenters;
 use App\Model\Order;
 use App\Model\Orders;
 use App\Model\Settings;
+use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 
 class KryoPresenter extends BasePresenter
@@ -15,6 +16,9 @@ class KryoPresenter extends BasePresenter
 
     /** @var Orders @inject */
     public $orderManager;
+
+    /** @var IMailer @inject */
+    public $mailer;
 
     function actionPending()
     {

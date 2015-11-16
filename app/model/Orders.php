@@ -116,9 +116,9 @@ class Orders extends Object
             $pathToFile = WWW_DIR . '/../temp/' . $filename;
             if (file_exists($pathToFile)) {
                 unlink($pathToFile);
-
-                $pdf->Output($pathToFile, 'F');
             }
+
+            $pdf->Output($pathToFile, 'F');
         } else {
             $pdf->Output($filename, 'I');
         }

@@ -83,11 +83,12 @@ class HomepagePresenter extends BasePresenter
         $this->orderManager->invoice($order, true);
 
         $mail = new Message();
-        $mail->setFrom(Settings::get('contact.name').' <'.Settings::get('contact.email').'>')
+        $mail->setFrom(Settings::get('contact.name') . ' <' . Settings::get('contact.email') . '>')
             ->addTo($order->getUser()->getEmail())
-            ->setSubject('Your order '.$order->getNum())
-            ->addAttachment(WWW_DIR.'/../temp/'.$order->getInvoiceFileName())
+            ->setSubject('Your order ' . $order->getNum())
             ->setBody('You have placed a new order on kryo.mossbauer.cz. Please follow payment instructions in attachment.');
+
+        $mail->addAttachment(WWW_DIR . '/../temp/' . $order->getInvoiceFileName());
 
         $this->mailer->send($mail);
 

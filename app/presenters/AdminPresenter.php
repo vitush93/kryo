@@ -69,9 +69,11 @@ class AdminPresenter extends BasePresenter
             ->setRequired()
             ->setDefaultValue(Settings::get('supply.dic'));
         $form->addText('name', 'Contact name')
+            ->setDefaultValue(Settings::get('contact.name'))
             ->setOption('description', 'Contact name is present in e-mail notification header.')
             ->setRequired();
         $form->addText('email', 'Contact e-mail')
+            ->setDefaultValue(Settings::get('contact.email'))
             ->setOption('description', 'Contact e-mail for notifications.')
             ->addRule(Form::EMAIL)
             ->setRequired();
