@@ -27,9 +27,13 @@ services:
             - addRole('admin')
             - addRole('kryo')
             - addResource('Homepage')
+            - addResource('Kryo')
             - allow('admin')
             - allow('user', 'Homepage')
+            - allow('kryo', 'Kryo')
+            - allow('kryo', 'Homepage')
     router: App\RouterFactory::createRouter
     entityManager: App\EntityManagerFactory::create
     - App\Model\Auth
     - App\Components\IOrdersFactory
+    - App\Model\Orders

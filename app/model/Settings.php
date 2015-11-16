@@ -6,8 +6,9 @@ namespace App\Model;
 use App\EntityManagerFactory;
 use Doctrine\ORM\EntityManager;
 use Nette\InvalidArgumentException;
+use Nette\Object;
 
-class Settings
+class Settings extends Object
 {
     /** @var null|self */
     private static $instance;

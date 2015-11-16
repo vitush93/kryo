@@ -113,6 +113,12 @@ class Order
     private $name;
 
     /**
+     * @Column(type="string", nullable=true)
+     * @var string
+     */
+    private $phone;
+
+    /**
      * @Column(type="string")
      *
      * @var string
@@ -475,4 +481,19 @@ class Order
         $this->num = date('Ym') . str_pad($this->id, 4, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
 }

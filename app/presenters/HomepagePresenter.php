@@ -39,6 +39,7 @@ class HomepagePresenter extends BasePresenter
         $order->setType($values->type);
         $order->setAmount($values->amount);
         $order->setName($values->name);
+        $order->setPhone($values->phone);
         $order->setBusinessName($values->business_name);
         $order->setIc($values->ic);
         $order->setDic($values->dic);
@@ -77,6 +78,7 @@ class HomepagePresenter extends BasePresenter
             ->setDefaultValue($user->getName())
             ->setOption('description', 'Enter the name to be used in invoice.')
             ->setRequired();
+        $form->addText('phone', 'Phone')->setDefaultValue($user->getPhone());
         $form->addText('business_name', 'Bussiness Name')
             ->setDefaultValue($user->getBusinessName())
             ->setOption('description', 'Fill in case you are a company.');
@@ -116,6 +118,7 @@ class HomepagePresenter extends BasePresenter
 
         $user->setName($values->name);
         $user->setEmail($values->email);
+        $user->setPhone($values->phone);
         $user->setAddress($values->address);
         $user->setBusinessName($values->business_name);
         $user->setIc($values->ic);
@@ -142,6 +145,8 @@ class HomepagePresenter extends BasePresenter
             ->setDefaultValue($defaults->getEmail())
             ->addRule(Form::EMAIL)
             ->setRequired();
+        $form->addText('phone', 'Phone')
+            ->setDefaultValue($defaults->getPhone());
         $form->addText('name', 'Name')
             ->setDefaultValue($defaults->getName());
         $form->addText('password', 'Password')

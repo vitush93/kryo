@@ -48,10 +48,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li {ifCurrent Homepage:account}class="active"{/ifCurrent}><a href="{link Homepage:account}"><i class="fa fa-user"></i> My account</a></li>
-                    <li {ifCurrent Homepage:new}class="active"{/ifCurrent}><a href="{link Homepage:new}"><i class="fa fa-truck"></i> Place a new order</a></li>
-                    <li {ifCurrent Homepage:default}class="active"{/ifCurrent}><a href="{link Homepage:}"><i class="fa fa-clock-o"></i> Pending orders</a></li>
-                    <li {ifCurrent Homepage:all}class="active"{/ifCurrent}><a href="{link Homepage:all}"><i class="fa fa-list"></i> All orders</a></li>
+                    {if $user->isInRole('user')}
+                        <li {ifCurrent Homepage:account}class="active"{/ifCurrent}><a href="{link Homepage:account}"><i class="fa fa-user"></i> My account</a></li>
+                        <li {ifCurrent Homepage:new}class="active"{/ifCurrent}><a href="{link Homepage:new}"><i class="fa fa-truck"></i> Place a new order</a></li>
+                        <li {ifCurrent Homepage:default}class="active"{/ifCurrent}><a href="{link Homepage:}"><i class="fa fa-clock-o"></i> Pending orders</a></li>
+                        <li {ifCurrent Homepage:all}class="active"{/ifCurrent}><a href="{link Homepage:all}"><i class="fa fa-list"></i> All orders</a></li>
+                    {/if}
+
+                    {if $user->isInRole('kryo')}
+                        <li {ifCurrent Kryo:default}class="active"{/ifCurrent}><a href="{link Kryo:default}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                        <li {ifCurrent Kryo:pending}class="active"{/ifCurrent}><a href="{link Kryo:pending}"><i class="fa fa-clock-o"></i> Pending orders</a></li>
+                        <li {ifCurrent Kryo:all}class="active"{/ifCurrent}><a href="{link Kryo:all}"><i class="fa fa-list"></i> All orders</a></li>
+                    {/if}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

@@ -63,6 +63,12 @@ class User
     private $email;
 
     /**
+     * @Column(type="string", nullable=true)
+     * @var string
+     */
+    private $phone;
+
+    /**
      * @Column(type="string")
      *
      * @var string
@@ -287,5 +293,21 @@ class User
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
     }
 }

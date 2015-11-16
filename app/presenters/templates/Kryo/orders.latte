@@ -1,0 +1,63 @@
+{block content}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Orders</div>
+                    <div class="panel-body">
+                        <table id="example" class="table" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Name</th>
+                                <th>E-mail</th>
+                                <th>Phone</th>
+                                <th>Action</th>
+                                {if $presenter->action != 'pending'}<th>Status</th>{/if}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $orders as $o}
+                                <tr>
+                                    <td><a href="{plink Homepage:detail $o->getId()}">{$o->getNum()}</a></td>
+                                    <td>{$o->getDate()|date:'j.n.Y H:i'}</td>
+                                    <td>{$o->getType()|firstUpper}</td>
+                                    <td>{$o->getAmount()}l</td>
+                                    <td>{$o->getName()}</td>
+                                    <td>{$o->getUser()->getEmail()}</td>
+                                    <td>{$o->getPhone()}</td>
+                                    <td>
+                                        {if $o->isPending()}
+                                            <a onclick="return confirm('Are you sure?');" href="{link cancel! $o->getId()}" class="btn btn-xs btn-danger">
+                                                <i class="fa fa-ban"></i> cancel
+                                            </a>
+
+                                            <a onclick="return confirm('Are you sure?');" href="{link fulfill! $o->getId()}" class="btn btn-xs btn-success">
+                                                <i class="fa fa-check"></i> complete
+                                            </a>
+                                        {/if}
+                                    </td>
+                                    {if $presenter->action != 'pending'}
+                                    <td>
+                                        {if $o->getStatus() == App\Model\Order::STATUS_PENDING}
+                                            pending
+                                        {elseif $o->getStatus() == App\Model\Order::STATUS_FULFILLED}
+                                            fulfilled
+                                        {elseif $o->getStatus() == App\Model\Order::STATUS_CANCELLED}
+                                            cancelled
+                                        {/if}
+                                    </td>
+                                    {/if}
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

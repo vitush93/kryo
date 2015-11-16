@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Model\User;
 use App\Utils\BootstrapForm;
 use Nette\Application\UI\Form;
 use Nette\Security\AuthenticationException;
@@ -28,6 +29,13 @@ class SignPresenter extends BasePresenter
             $this->getUser()->login($values->email, $values->password);
 
             $this->flashMessage('You have been successfully logged in.', 'success');
+
+            if ($this->user->isInRole(User::ROLE_USER)) {
+                $this->redirect('Homepage:default');
+            } else if($this->user->isInRole(User::ROLE_KRYO)) {
+                $this->redirect('Kryo:default');
+            }
+
             $this->redirect('Homepage:default');
         } catch (AuthenticationException $e) {
             $this->flashMessage($e->getMessage(), 'danger');

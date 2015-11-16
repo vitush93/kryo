@@ -11,6 +11,7 @@
                 <th>Price per unit</th>
                 <th>Total price</th>
                 <th>Action</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -32,6 +33,15 @@
                         <a href="" class="btn btn-xs btn-primary">
                             <i class="fa fa-download"></i> invoice
                         </a>
+                        {/if}
+                    </td>
+                    <td>
+                        {if $o->getStatus() == App\Model\Order::STATUS_PENDING}
+                            pending
+                        {elseif $o->getStatus() == App\Model\Order::STATUS_FULFILLED}
+                            fulfilled
+                        {elseif $o->getStatus() == App\Model\Order::STATUS_CANCELLED}
+                            cancelled
                         {/if}
                     </td>
                 </tr>
