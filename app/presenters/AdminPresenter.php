@@ -34,6 +34,10 @@ class AdminPresenter extends BasePresenter
     {
         Settings::set('helium.price_per_unit', $values->helium_price);
         Settings::set('nitrogen.price_per_unit', $values->nitrogen_price);
+        Settings::set('supply.address', $values->address);
+        Settings::set('supply.ic', $values->ic);
+        Settings::set('supply.dic', $values->dic);
+
         $this->flashMessage('Settings saved.', 'info');
         $this->redirect('this');
     }
@@ -52,6 +56,16 @@ class AdminPresenter extends BasePresenter
             ->addRule(Form::INTEGER)
             ->setRequired()
             ->setDefaultValue(Settings::get('nitrogen.price_per_unit'));
+        $form->addTextArea('address', 'Address', 10, 5)
+            ->setOption('description', 'Address to be used in invoices.')
+            ->setRequired()
+            ->setDefaultValue(Settings::get('supply.address'));
+        $form->addText('ic', 'IČ')
+            ->setRequired()
+            ->setDefaultValue(Settings::get('supply.ic'));
+        $form->addText('dic', 'DIČ')
+            ->setRequired()
+            ->setDefaultValue(Settings::get('supply.dic'));
         $form->addSubmit('proces', 'Save');
 
         $form->onSuccess[] = $this->settingsFormSucceeded;

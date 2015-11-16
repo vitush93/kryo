@@ -88,11 +88,11 @@ class HomepagePresenter extends BasePresenter
         $form->addText('dic', 'DIC')
             ->setDefaultValue($user->getDic())
             ->setOption('description', 'Fill in case you are a company');
-        $form->addTextArea('address', 'Address')
+        $form->addTextArea('address', 'Address', 10, 5)
             ->setDefaultValue($user->getAddress())
             ->setOption('description', 'Enter the shipping address.')
             ->setRequired();
-        $form->addTextArea('invoice_address', 'Invoice address')
+        $form->addTextArea('invoice_address', 'Invoice address', 10, 5)
             ->setOption('description', 'Enter the invoice address if it differs from the shipping address.');
         $form->addSelect('shipping_method', 'Shipping method', [
             Order::SHIPPING_DELIVERY => 'I want to deliver the package to specified address',

@@ -18,6 +18,7 @@
                                 <th>Email</th>
                                 <th>Name</th>
                                 <th>Phone</th>
+                                <th>Role</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -26,6 +27,7 @@
                                     <td>{$u->getEmail()}</td>
                                     <td>{$u->getName()}</td>
                                     <td>{$u->getPhone()}</td>
+                                    <td>{$u->getRole()|firstUpper}</td>
                                 </tr>
                             {/foreach}
                             </tbody>
