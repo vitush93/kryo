@@ -397,7 +397,7 @@ class Order
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -506,5 +506,10 @@ class Order
     public function setPhone($phone)
     {
         $this->phone = $phone;
+    }
+
+    public function getInvoiceFileName()
+    {
+        return 'faktura_F' . $this->getNum() . '.pdf';
     }
 }

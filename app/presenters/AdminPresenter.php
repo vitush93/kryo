@@ -37,6 +37,8 @@ class AdminPresenter extends BasePresenter
         Settings::set('supply.address', $values->address);
         Settings::set('supply.ic', $values->ic);
         Settings::set('supply.dic', $values->dic);
+        Settings::set('contact.email', $values->email);
+        Settings::set('contact.name', $values->name);
 
         $this->flashMessage('Settings saved.', 'info');
         $this->redirect('this');
@@ -66,7 +68,15 @@ class AdminPresenter extends BasePresenter
         $form->addText('dic', 'DIČ')
             ->setRequired()
             ->setDefaultValue(Settings::get('supply.dic'));
+        $form->addText('name', 'Contact name')
+            ->setOption('description', 'Contact name is present in e-mail notification header.')
+            ->setRequired();
+        $form->addText('email', 'Contact e-mail')
+            ->setOption('description', 'Contact e-mail for notifications.')
+            ->addRule(Form::EMAIL)
+            ->setRequired();
         $form->addSubmit('proces', 'Save');
+
 
         $form->onSuccess[] = $this->settingsFormSucceeded;
 

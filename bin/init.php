@@ -20,11 +20,17 @@ $address = new \App\Model\Setting('supply.address', "Univerzita Karlova v Praze,
 $ic = new \App\Model\Setting('supply.ic', '28115708');
 $dic = new \App\Model\Setting('supply.dic', 'CZ28115708');
 
+$name = new \App\Model\Setting('contact.name', 'Kryo');
+$mail = new \App\Model\Setting('contact.email', 'noreply@mossbauer.cz');
+
+
 $em->persist($helium_price);
 $em->persist($nitrogen_price);
 $em->persist($address);
 $em->persist($ic);
 $em->persist($dic);
+$em->persist($name);
+$em->persist($mail);
 
 $em->flush();
 

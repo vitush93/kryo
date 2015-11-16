@@ -5,6 +5,8 @@ namespace App\Presenters;
 
 use App\Model\Order;
 use App\Model\Orders;
+use App\Model\Settings;
+use Nette\Mail\Message;
 
 class KryoPresenter extends BasePresenter
 {
@@ -50,6 +52,14 @@ class KryoPresenter extends BasePresenter
 
         if ($order) {
             $this->orderManager->changeStatus($order, Order::STATUS_FULFILLED);
+
+            $mail = new Message();
+            $mail->setFrom(Settings::get('contact.name').' <'.Settings::get('contact.email').'>')
+                ->addTo($order->getUser()->getEmail())
+                ->setSubject('Order '.$order->getNum().' ready')
+                ->setBody('Your order is ready to be shipped / ready for pick up.');
+
+            $this->mailer->send($mail);
 
             $this->flashMessage("Order {$order->getNum()} fulfilled", 'info');
             $this->redirect('this');

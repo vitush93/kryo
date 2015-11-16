@@ -5,18 +5,26 @@ namespace App\Presenters;
 
 use App\Components\IOrdersFactory;
 use App\Model\Order;
+use App\Model\Orders;
 use App\Model\Settings;
 use App\Model\User;
 use App\Utils\BootstrapForm;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
+use Nette\Mail\IMailer;
+use Nette\Mail\Message;
 
 class HomepagePresenter extends BasePresenter
 {
+    /** @var Orders @inject */
+    public $orderManager;
 
     /** @var IOrdersFactory @inject */
     public $ordersFactory;
+
+    /** @var IMailer @inject */
+    public $mailer;
 
     function actionAll()
     {
@@ -29,6 +37,21 @@ class HomepagePresenter extends BasePresenter
         if (!$order) throw new BadRequestException;
 
         $this->template->order = $order;
+    }
+
+    /**
+     * @param string $to E-mail address
+     * @param string $subject E-mail subject
+     * @param string $message
+     */
+    public function sendMail($to, $subject, $message)
+    {
+        $mail = new Message();
+        $mail->setFrom('MFFun <noreply@vithabada.cz>')
+            ->addTo($to)
+            ->setSubject($subject)
+            ->setHtmlBody($message);
+        $this->mailer->send($mail);
     }
 
     function orderFormSucceeded(Form $form, $values)
@@ -56,6 +79,17 @@ class HomepagePresenter extends BasePresenter
 
         $order->createNum();
         $this->em->flush();
+
+        $this->orderManager->invoice($order, true);
+
+        $mail = new Message();
+        $mail->setFrom(Settings::get('contact.name').' <'.Settings::get('contact.email').'>')
+            ->addTo($order->getUser()->getEmail())
+            ->setSubject('Your order '.$order->getNum())
+            ->addAttachment(WWW_DIR.'/../temp/'.$order->getInvoiceFileName())
+            ->setBody('You have placed a new order on kryo.mossbauer.cz. Please follow payment instructions in attachment.');
+
+        $this->mailer->send($mail);
 
         $this->flashMessage('Order has been successfully created!', 'success');
         $this->redirect('this');
